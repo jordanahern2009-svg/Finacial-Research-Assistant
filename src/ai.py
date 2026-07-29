@@ -6,19 +6,34 @@ import os
 from typing import Any
 
 import requests
+import streamlit as st
+
+
+def _setting(name: str, default: str = "") -> str:
+    """Read a setting locally from env or remotely from Streamlit secrets."""
+
+    value = os.getenv(name)
+    if value:
+        return value
+    try:
+        secret_value = st.secrets.get(name, default)
+        return str(secret_value) if secret_value else default
+    except Exception:
+        # Streamlit secrets are unavailable during plain Python execution.
+        return default
 
 
 def ai_is_configured() -> bool:
-    return bool(os.getenv("LLM_API_KEY"))
+    return bool(_setting("LLM_API_KEY"))
 
 
 def _chat(messages: list[dict[str, str]], temperature: float = 0.2) -> str:
-    api_key = os.getenv("LLM_API_KEY")
+    api_key = _setting("LLM_API_KEY")
     if not api_key:
         raise RuntimeError("AI is not configured. Add LLM_API_KEY to your .env file.")
 
-    endpoint = os.getenv("LLM_BASE_URL", "https://api.openai.com/v1/chat/completions")
-    model = os.getenv("LLM_MODEL", "gpt-4o-mini")
+    endpoint = _setting("LLM_BASE_URL", "https://api.openai.com/v1/chat/completions")
+    model = _setting("LLM_MODEL", "gpt-4o-mini")
     response = requests.post(
         endpoint,
         headers={"Authorization": f"Bearer {api_key}", "Content-Type": "application/json"},
