@@ -1,25 +1,40 @@
-# SignalDesk — Financial Research Assistant
+# SignalDesk - AI Financial Research Assistant
 
-SignalDesk is a portfolio project built by an upcoming high school senior who is exploring data science, financial research, and responsible AI. Search a ticker and explore market data, price history, financial statements, company news, charts, an AI-generated research brief, and company Q&A.
+Hey, I'm Jordan. I'm a rising high school senior who is really interested in data science, finance, and the way AI can make complicated information easier to understand.
 
-## Why this project belongs on a data science portfolio
+I built SignalDesk because I wanted to make a tool I would actually use while researching a company. Instead of jumping between a stock chart, financial statements, news articles, and an AI chat, SignalDesk puts those pieces together in one research workspace.
 
-This project turns messy public data into a repeatable research workflow:
+I'm hoping to study data science at Brown University, and this is one of the projects I'm using to learn by building. It is still growing, but it already gives me a place to practice working with real data, APIs, Python, visualizations, and responsible AI.
 
-- **Data ingestion:** price history, company metadata, statements, and news
-- **Data transformation:** normalized provider responses and display-ready tables
-- **Visualization:** interactive Plotly price and volume charts
-- **Applied AI:** grounded summaries and Q&A using only the current research context
-- **Product thinking:** clear uncertainty, refresh timestamps, and a financial-data disclaimer
+## What SignalDesk can do
+
+- Search for a stock ticker such as AAPL or MSFT
+- Pull recent price history, quote information, company details, and news
+- Display income statements, balance sheets, and cash-flow statements
+- Create interactive price and volume charts
+- Generate an AI-assisted research brief using the current company data
+- Answer questions about a company using the current research context
+- Show the data timestamp and explain that the output is for education, not financial advice
+
+## Why I built it
+
+I wanted this project to be more than a pretty dashboard. I wanted to learn how a data product actually comes together:
+
+1. Get data from an external provider.
+2. Clean up inconsistent responses.
+3. Turn the data into tables and visualizations that make sense.
+4. Give an LLM enough context to be useful without letting it invent facts.
+5. Build an interface that makes someone want to explore.
 
 ## Tech stack
 
-Python · Streamlit · yfinance · pandas · Plotly · requests · an OpenAI-compatible LLM API
+Python · Streamlit · yfinance · pandas · Plotly · requests · NVIDIA NIM / GLM-5.2
 
-## Run locally
+## Run it locally
 
 ```powershell
-cd financial-research-assistant
+git clone https://github.com/jordanahern2009-svg/Finacial-Research-Assistant.git
+cd Finacial-Research-Assistant
 python -m venv .venv
 .\.venv\Scripts\Activate.ps1
 pip install -r requirements.txt
@@ -27,14 +42,7 @@ Copy-Item .env.example .env
 streamlit run app.py
 ```
 
-For development and tests, install the optional test dependency too:
-
-```powershell
-pip install -r requirements-dev.txt
-pytest -q
-```
-
-The app works without an LLM key. To enable the research brief and Q&A, put an API key in `.env`:
+The market-data parts work without an LLM key. To turn on the AI research brief and company Q&A, add your key to `.env`:
 
 ```text
 LLM_API_KEY=your-key-here
@@ -42,48 +50,41 @@ LLM_BASE_URL=https://integrate.api.nvidia.com/v1/chat/completions
 LLM_MODEL=z-ai/glm-5.2
 ```
 
-`LLM_BASE_URL` is intentionally configurable so the project can work with any provider that supports the common chat-completions request format.
+Never commit `.env`. It is already included in `.gitignore`.
 
-## Deploy a public demo
-
-Keep localhost for development, then deploy the portfolio demo with [Streamlit Community Cloud](https://streamlit.io/cloud):
-
-1. Push this repository to GitHub.
-2. Connect GitHub at [share.streamlit.io](https://share.streamlit.io/).
-3. Create an app using `app.py` as the entrypoint and `main` as the branch.
-4. In Advanced settings, add these secrets without committing `.env`:
-
-```text
-LLM_API_KEY = "your-nvidia-key"
-LLM_BASE_URL = "https://integrate.api.nvidia.com/v1/chat/completions"
-LLM_MODEL = "z-ai/glm-5.2"
-```
-
-After deployment, add the public `streamlit.app` URL to the top of this README and your GitHub profile README. Keep the API key in the platform's secrets settings only.
-
-## Project structure
+## Project layout
 
 ```text
 financial-research-assistant/
-├── app.py              # Streamlit user interface
+├── app.py                  # Streamlit interface
 ├── src/
-│   ├── ai.py            # LLM adapter and grounded prompts
-│   ├── charts.py        # Plotly chart builders
-│   └── data.py          # Provider access and normalization
-├── tests/               # Small unit tests for data transformations
+│   ├── ai.py               # Grounded LLM prompts and API client
+│   ├── charts.py           # Plotly chart builders
+│   └── data.py             # Market-data access and normalization
+├── tests/                  # Data transformation tests
 ├── .env.example
 ├── requirements.txt
 └── README.md
 ```
 
-## Responsible-use notes
+## Deploy a demo
 
-This is an educational research tool, not an investment adviser. Public market data may be delayed, incomplete, restated, or inaccurate. AI output can be wrong, so important claims should be checked against primary company filings and official sources.
+My goal is to keep localhost for development and have a public demo that people can click from my GitHub profile. Streamlit Community Cloud can deploy `app.py` directly from this repository.
 
-## Next milestones
+1. Connect the repository at [share.streamlit.io](https://share.streamlit.io/).
+2. Select the `main` branch and `app.py` as the entrypoint.
+3. Add `LLM_API_KEY`, `LLM_BASE_URL`, and `LLM_MODEL` in the app's Secrets settings.
+4. Do not upload or commit the local `.env` file.
 
-1. Add SEC EDGAR company facts and filing links as a primary-source layer.
-2. Add a watchlist and saved research notes.
-3. Add an evaluation set for testing whether AI answers stay grounded in the supplied data.
-4. Deploy a public demo with secrets stored outside the repository.
-5. Build the companion algorithmic trading backtester with reusable analytics modules.
+## What I want to build next
+
+- Add SEC EDGAR filings so important claims can be checked against primary sources.
+- Add saved watchlists and research notes.
+- Add tests that measure whether AI answers stay grounded in the supplied data.
+- Add a comparison view for multiple companies.
+- Build the companion algorithmic trading backtester with historical stock and crypto data.
+
+## Responsible use
+
+This is an educational project, not investment advice. Public market data may be delayed, incomplete, restated, or inaccurate. AI output can also be wrong, so important claims should be checked against company filings and other primary sources.
+
