@@ -87,4 +87,3 @@ My goal is to keep localhost for development and have a public demo that people 
 ## Responsible use
 
 This is an educational project, not investment advice. Public market data may be delayed, incomplete, restated, or inaccurate. AI output can also be wrong, so important claims should be checked against company filings and other primary sources.
-
